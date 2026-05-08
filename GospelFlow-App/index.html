@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GospelFlow - Visualizador de Cifras</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+      padding: 32px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0 0 20px;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    select,
+    button {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      padding: 14px 16px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select:focus,
+    button:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+    }
+
+    button {
+      margin-top: 18px;
+      background: #4f46e5;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .chord-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .chord-card {
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid #e5e7eb;
+      background: #f8fafc;
+    }
+
+    .chord-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+    }
+
+    .chord-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0c4a6e;
+      font-weight: 700;
+    }
+
+    .note {
+      margin: 0;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Visualizador de Cifras Gospel</h1>
+    <p>Escolha um louvor gospel para ver a digitação, notas e sugestão de progressão.</p>
+
+    <label for="chord">Selecione o louvor</label>
+    <select id="chord">
+      <option value="">-- Escolha um louvor --</option>
+      <option value="MeiaNoite">Meia Noite</option>
+      <option value="Sublime">Sublime</option>
+    </select>
+
+    <button id="show">Ver cifra</button>
+
+    <div id="info" class="chord-grid"></div>
+  </div>
+
+  <script>
+    const chords = {
+      MeiaNoite: {
+        name: "Meia Noite",
+        positions: ["x,3,2,0,1,0"],
+        notes: ["C", "E", "G"],
+        finger: "1-2-0-3",
+        progression: "C - Am - F - G"
+      },
+      Sublime: {
+        name: "Sublime",
+        positions: ["3,2,0,0,0,3"],
+        notes: ["G", "B", "D"],
+        finger: "2-1-0-0-0-3",
+        progression: "G - D - Em - C"
+      }
+    };
+
+    const select = document.getElementById("chord");
+    const info = document.getElementById("info");
+    const button = document.getElementById("show");
+
+    function renderChord(key) {
+      if (!key || !chords[key]) {
+        info.innerHTML = `<div class="chord-card"><p>Selecione um louvor válido acima.</p></div>`;
+        return;
+      }
+
+      const chord = chords[key];
+      info.innerHTML = `
+        <div class="chord-card">
+          <h2>${chord.name}</h2>
+          <div class="chord-box">
+            <span class="badge">Notas: ${chord.notes.join(", ")}</span>
+            <span class="badge">Dedos: ${chord.finger}</span>
+          </div>
+          <p class="note">Posição no braço: ${chord.positions[0]}</p>
+          <p class="note">Sugestão de progressão: ${chord.progression}</p>
+        </div>
+      `;
+    }
+
+    button.addEventListener("click", () => renderChord(select.value));
+    renderChord("");
+  </script>
+</body>
+</html>  
